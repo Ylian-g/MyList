@@ -281,7 +281,7 @@ export function MediaPage({ mediaType, apiPath, title, subtitle }: MediaPageProp
               {/* Pagination */}
               <Pagination
                 currentPage={page}
-                totalPages={Math.min(discover.totalPages, 500)}
+                totalPages={discover.totalPages}
                 onPageChange={handlePageChange}
               />
             </>

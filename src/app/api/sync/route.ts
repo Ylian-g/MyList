@@ -61,24 +61,39 @@ export async function POST() {
 
 export async function GET() {
   const month = getCurrentMonth();
-  const recommendations = await prisma.monthlyRecommendation.findMany({
-    where: { month },
-    orderBy: { createdAt: "desc" },
-  });
 
-  const myList = await prisma.media.findMany({
-    select: { externalId: true, type: true },
-  });
+  const [recommendations, myList] = await Promise.all([
+    prisma.monthlyRecommendation.findMany({
+      where: { month },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.media.findMany({
+      orderBy: { updatedAt: "desc" },
+    }),
+  ]);
+
   const myIds = new Set(myList.map((m) => `${m.externalId}-${m.type}`));
 
-  const filtered = recommendations.filter(
+  // Nouveautés : recommandations pas encore dans ma liste
+  const newRecs = recommendations.filter(
     (r) => !myIds.has(`${r.externalId}-${r.type}`)
+  );
+
+  // Déjà vus : éléments de ma liste qui matchent les recommandations du mois
+  const recIds = new Set(recommendations.map((r) => `${r.externalId}-${r.type}`));
+  const alreadySeen = myList.filter(
+    (m) => m.externalId && recIds.has(`${m.externalId}-${m.type}`)
   );
 
   return NextResponse.json({
     month,
-    anime: filtered.filter((r) => r.type === "ANIME"),
-    manga: filtered.filter((r) => r.type === "MANGA"),
-    games: filtered.filter((r) => r.type === "GAME"),
+    anime: newRecs.filter((r) => r.type === "ANIME"),
+    manga: newRecs.filter((r) => r.type === "MANGA"),
+    games: newRecs.filter((r) => r.type === "GAME"),
+    seen: {
+      anime: alreadySeen.filter((m) => m.type === "ANIME"),
+      manga: alreadySeen.filter((m) => m.type === "MANGA"),
+      games: alreadySeen.filter((m) => m.type === "GAME"),
+    },
   });
 }
