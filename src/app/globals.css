@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+/* ── Home: Noir cinématique ── */
+@plugin "daisyui/theme" {
+  name: "mylist-home";
+  default: true;
+  color-scheme: dark;
+  --color-base-100: #0a0a0a;
+  --color-base-200: #111111;
+  --color-base-300: #1a1a1a;
+  --color-base-content: #e5e5e5;
+  --color-primary: #ffffff;
+  --color-primary-content: #0a0a0a;
+  --color-secondary: #a3a3a3;
+  --color-secondary-content: #0a0a0a;
+  --color-accent: #d4d4d4;
+  --color-accent-content: #0a0a0a;
+  --color-neutral: #171717;
+  --color-neutral-content: #e5e5e5;
+  --color-info: #38bdf8;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+}
+
+/* ── Anime: Orange brûlé / ambre chaud ── */
+@plugin "daisyui/theme" {
+  name: "mylist-anime";
+  color-scheme: dark;
+  --color-base-100: #1a0f00;
+  --color-base-200: #231400;
+  --color-base-300: #2d1a00;
+  --color-base-content: #fef3e2;
+  --color-primary: #f97316;
+  --color-primary-content: #000000;
+  --color-secondary: #fdba74;
+  --color-secondary-content: #1a0f00;
+  --color-accent: #fb923c;
+  --color-accent-content: #000000;
+  --color-neutral: #271700;
+  --color-neutral-content: #fef3e2;
+  --color-info: #38bdf8;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+}
+
+/* ── Manga: Pourpre profond / encre ── */
+@plugin "daisyui/theme" {
+  name: "mylist-manga";
+  color-scheme: dark;
+  --color-base-100: #0f0520;
+  --color-base-200: #160a2e;
+  --color-base-300: #1e0f3d;
+  --color-base-content: #f3e8ff;
+  --color-primary: #a855f7;
+  --color-primary-content: #000000;
+  --color-secondary: #c084fc;
+  --color-secondary-content: #0f0520;
+  --color-accent: #9333ea;
+  --color-accent-content: #ffffff;
+  --color-neutral: #1a0930;
+  --color-neutral-content: #f3e8ff;
+  --color-info: #38bdf8;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+}
+
+/* ── Games: Bleu électrique / cyber ── */
+@plugin "daisyui/theme" {
+  name: "mylist-games";
+  color-scheme: dark;
+  --color-base-100: #020617;
+  --color-base-200: #0f172a;
+  --color-base-300: #1e293b;
+  --color-base-content: #e0f2fe;
+  --color-primary: #3b82f6;
+  --color-primary-content: #000000;
+  --color-secondary: #60a5fa;
+  --color-secondary-content: #020617;
+  --color-accent: #2563eb;
+  --color-accent-content: #ffffff;
+  --color-neutral: #0c1426;
+  --color-neutral-content: #e0f2fe;
+  --color-info: #38bdf8;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+}
+
+/* ── Base ── */
+* {
+  font-family: 'DM Sans', sans-serif;
+}
+
+h1, h2, h3, .font-display {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px currentColor; }
+  50% { box-shadow: 0 0 20px currentColor; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease-out both;
+}
+
+/* Stagger children */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 360ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 420ms; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+/* ── Carousel snap ── */
+.carousel-snap {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.carousel-snap > * {
+  scroll-snap-align: start;
+}
+
+/* ── Glass effect ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Gradient text ── */
+.gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

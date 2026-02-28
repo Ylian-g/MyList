@@ -1,0 +1,38 @@
+{
+  "name": "mylist",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "@types/bun": "latest",
+    "@types/node": "^25.3.2",
+    "@types/pg": "^8.16.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^10.0.2",
+    "postcss": "^8.5.6",
+    "prisma": "^7.4.2",
+    "tailwindcss": "^4.2.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.4.2",
+    "@prisma/client": "^7.4.2",
+    "daisyui": "^5.5.19",
+    "next": "^16.1.6",
+    "pg": "^8.19.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}

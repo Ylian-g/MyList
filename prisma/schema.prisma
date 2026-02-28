@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MediaType {
+  ANIME
+  MANGA
+  GAME
+}
+
+enum Status {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  PAUSED
+  DROPPED
+}
+
+model Media {
+  id          Int       @id @default(autoincrement())
+  externalId  String?
+  type        MediaType
+  title       String
+  imageUrl    String?
+  description String?
+  status      Status    @default(PLANNED)
+  rating      Float?
+  comment     String?
+  isRewatch   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([externalId, type])
+}
+
+model MonthlyRecommendation {
+  id          Int       @id @default(autoincrement())
+  externalId  String
+  type        MediaType
+  title       String
+  imageUrl    String?
+  description String?
+  month       Int
+  isNew       Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  @@unique([externalId, type, month])
+}
