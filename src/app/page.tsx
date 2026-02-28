@@ -24,6 +24,13 @@ interface SeenItem {
   type: string;
 }
 
+interface PlannedItem {
+  id: number;
+  title: string;
+  imageUrl: string | null;
+  type: string;
+}
+
 interface SyncData {
   month: number;
   anime: Recommendation[];
@@ -33,6 +40,11 @@ interface SyncData {
     anime: SeenItem[];
     manga: SeenItem[];
     games: SeenItem[];
+  };
+  planned: {
+    anime: PlannedItem[];
+    manga: PlannedItem[];
+    games: PlannedItem[];
   };
 }
 
@@ -81,6 +93,11 @@ export default function HomePage() {
     (data?.seen?.anime?.length ?? 0) +
     (data?.seen?.manga?.length ?? 0) +
     (data?.seen?.games?.length ?? 0);
+
+  const totalPlanned =
+    (data?.planned?.anime?.length ?? 0) +
+    (data?.planned?.manga?.length ?? 0) +
+    (data?.planned?.games?.length ?? 0);
 
   return (
     <div className="animate-fade-in">
@@ -133,7 +150,61 @@ export default function HomePage() {
         </div>
       ) : (
         <div className="space-y-12">
-          {/* ── NOUVEAUTÉS ── */}
+
+          {/* ════════════════════════════════════════ */}
+          {/* ── À REGARDER / PLANIFIÉS ──           */}
+          {/* ════════════════════════════════════════ */}
+          {totalPlanned > 0 && (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="h-px flex-1 bg-white/5" />
+                <span className="font-display text-sm tracking-widest text-primary/60">
+                  À DÉCOUVRIR PROCHAINEMENT
+                </span>
+                <div className="h-px flex-1 bg-white/5" />
+              </div>
+
+              {(data?.planned?.anime?.length ?? 0) > 0 && (
+                <PlannedSection
+                  title="ANIME À VOIR"
+                  items={data!.planned.anime}
+                  href="/anime"
+                  accentClass="from-orange-500/20 to-transparent"
+                  badgeClass="badge-warning"
+                />
+              )}
+              {(data?.planned?.manga?.length ?? 0) > 0 && (
+                <PlannedSection
+                  title="MANGA À LIRE"
+                  items={data!.planned.manga}
+                  href="/manga"
+                  accentClass="from-purple-500/20 to-transparent"
+                  badgeClass="badge-secondary"
+                />
+              )}
+              {(data?.planned?.games?.length ?? 0) > 0 && (
+                <PlannedSection
+                  title="JEUX À JOUER"
+                  items={data!.planned.games}
+                  href="/games"
+                  accentClass="from-blue-500/20 to-transparent"
+                  badgeClass="badge-info"
+                />
+              )}
+            </>
+          )}
+
+          {/* ════════════════════════════════════════ */}
+          {/* ── NOUVEAUTÉS DU MOIS ──               */}
+          {/* ════════════════════════════════════════ */}
+          <div className="flex items-center gap-3">
+            <div className="h-px flex-1 bg-white/5" />
+            <span className="font-display text-sm tracking-widest text-base-content/30">
+              NOUVEAUTÉS DU MOIS
+            </span>
+            <div className="h-px flex-1 bg-white/5" />
+          </div>
+
           <SectionBlock
             title="ANIME"
             href="/anime"
@@ -156,7 +227,9 @@ export default function HomePage() {
             badgeClass="badge-info"
           />
 
-          {/* ── DÉJÀ VUS ── */}
+          {/* ════════════════════════════════════════ */}
+          {/* ── DÉJÀ VUS CE MOIS ──                 */}
+          {/* ════════════════════════════════════════ */}
           {totalSeen > 0 && (
             <>
               <div className="flex items-center gap-3 pt-4">
@@ -193,6 +266,59 @@ export default function HomePage() {
         </div>
       )}
     </div>
+  );
+}
+
+/* ── Planifiés section ── */
+function PlannedSection({
+  title,
+  items,
+  href,
+  accentClass,
+  badgeClass,
+}: {
+  title: string;
+  items: PlannedItem[];
+  href: string;
+  accentClass: string;
+  badgeClass: string;
+}) {
+  return (
+    <section className="relative">
+      <div className={`absolute -left-4 top-0 h-24 w-24 rounded-full bg-gradient-to-br ${accentClass} blur-2xl`} />
+      <div className="relative">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <h2 className="font-display text-xl tracking-widest">{title}</h2>
+            <span className={`badge badge-sm ${badgeClass}`}>{items.length}</span>
+          </div>
+          <a
+            href={href}
+            className="flex items-center gap-1 text-xs text-primary/60 transition-colors hover:text-primary"
+          >
+            Voir tout
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </a>
+        </div>
+
+        <Carousel>
+          {items.map((item) => (
+            <MiniCard
+              key={item.id}
+              title={item.title}
+              imageUrl={item.imageUrl}
+              overlay={
+                <span className="rounded-full bg-primary/80 px-1.5 py-0.5 text-[9px] font-bold text-primary-content shadow backdrop-blur">
+                  PLANIFIÉ
+                </span>
+              }
+            />
+          ))}
+        </Carousel>
+      </div>
+    </section>
   );
 }
 
@@ -295,21 +421,18 @@ function SeenSection({
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-                  {/* Rating badge */}
                   {item.rating != null && (
                     <div className="absolute left-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-primary/90 text-[10px] font-bold text-primary-content shadow">
                       {item.rating}
                     </div>
                   )}
 
-                  {/* Status badge */}
                   <div className="absolute right-1.5 top-1.5">
                     <span className="rounded-full bg-black/50 px-1.5 py-0.5 text-[9px] font-medium text-white/80 backdrop-blur">
                       {STATUS_LABELS[item.status] ?? item.status}
                     </span>
                   </div>
 
-                  {/* Title */}
                   <div className="absolute bottom-0 left-0 right-0 p-2.5">
                     <p className="line-clamp-2 text-[11px] font-semibold leading-tight text-white/90 drop-shadow-lg">
                       {item.title}

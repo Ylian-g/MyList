@@ -9,6 +9,11 @@ function getCurrentMonth() {
   return now.getFullYear() * 100 + (now.getMonth() + 1);
 }
 
+function pickRandom<T>(arr: T[], count: number): T[] {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
 export async function POST() {
   const month = getCurrentMonth();
 
@@ -85,6 +90,20 @@ export async function GET() {
     (m) => m.externalId && recIds.has(`${m.externalId}-${m.type}`)
   );
 
+  // Plan to Watch : sélection aléatoire de 4 par type
+  const plannedAnime = pickRandom(
+    myList.filter((m) => m.type === "ANIME" && m.status === "PLANNED"),
+    4
+  );
+  const plannedManga = pickRandom(
+    myList.filter((m) => m.type === "MANGA" && m.status === "PLANNED"),
+    4
+  );
+  const plannedGames = pickRandom(
+    myList.filter((m) => m.type === "GAME" && m.status === "PLANNED"),
+    4
+  );
+
   return NextResponse.json({
     month,
     anime: newRecs.filter((r) => r.type === "ANIME"),
@@ -94,6 +113,11 @@ export async function GET() {
       anime: alreadySeen.filter((m) => m.type === "ANIME"),
       manga: alreadySeen.filter((m) => m.type === "MANGA"),
       games: alreadySeen.filter((m) => m.type === "GAME"),
+    },
+    planned: {
+      anime: plannedAnime,
+      manga: plannedManga,
+      games: plannedGames,
     },
   });
 }
